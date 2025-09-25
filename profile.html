@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Profile - NCCR Portal v2</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/styles.css"></head>
+<body onload="requireAuth()">
+  <div class="topbar"><div class="brand"><div class="logo-badge">N</div> NCCR Portal</div><div class="top-actions"><div id="header-user" class="small"></div><button id="logout-btn" class="btn">Logout</button></div></div>
+  <div class="app">
+    <aside class="sidebar"><div style="font-weight:700">Navigation</div><div class="nav"><a href="dashboard.html">Dashboard</a><a href="projects.html">Projects</a><a href="ngos.html">NGOs</a><a href="credits.html">Credits</a><a href="trading.html">Trading</a><a href="profile.html" class="active">Profile</a><a href="notifications.html">Notifications</a></div></aside>
+    <main class="main"><div class="card" style="max-width:600px"><h3>My Profile</h3><form id="frm"><div style="margin-bottom:8px"><label class="small">Name</label><input id="name" class="search-input"></div><div style="margin-bottom:8px"><label class="small">Email</label><input id="email" class="search-input" disabled></div><button class="btn-primary">Save</button></form></div></main>
+  </div>
+<script src="assets/app.js"></script>
+<script>
+requireAuth();
+const u = getUser();
+document.getElementById('name').value = u.name || '';
+document.getElementById('email').value = u.email || '';
+document.getElementById('frm').addEventListener('submit', e=>{ e.preventDefault(); const name = document.getElementById('name').value; const nu = { ...u, name}; localStorage.setItem('nccr_user_v2', JSON.stringify(nu)); alert('Profile updated (local)'); });
+</script>
+</body></html>

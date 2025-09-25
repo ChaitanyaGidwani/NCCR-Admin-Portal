@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Login - NCCR Portal v2</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><div class="logo-badge">N</div> NCCR Portal</div>
+    <div class="top-actions"><div class="small">Demo — Frontend only</div></div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:center;padding:40px">
+    <div class="card" style="max-width:520px;width:100%">
+      <h2>Welcome back</h2>
+      <p class="small">Sign in to manage projects, NGOs and credits.</p>
+      <form id="loginForm" style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+        <input id="email" class="search-input" placeholder="Email" required>
+        <input id="password" class="search-input" type="password" placeholder="Password" required>
+        <div style="display:flex;gap:8px">
+          <button class="btn-primary" style="flex:1">Sign in</button>
+          <button type="button" id="demo-btn" class="btn" onclick="demoLogin()">Demo</button>
+        </div>
+        <div class="small" style="margin-top:6px">Use any credentials — data is stored in your browser.</div>
+      </form>
+    </div>
+  </div>
+
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const name = email.split('@')[0] || 'User';
+  localStorage.setItem('nccr_user_v2', JSON.stringify({name, email}));
+  NCCR.ensureDemoData();
+  location.href = '/dashboard.html';
+});
+function demoLogin(){
+  localStorage.setItem('nccr_user_v2', JSON.stringify({name:'Ashutosh', email:'ashu@example.com'}));
+  NCCR.ensureDemoData();
+  location.href = '/dashboard.html';
+}
+</script>
+</body>
+</html>

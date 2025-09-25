@@ -1,0 +1,14 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Notifications - NCCR Portal v2</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/styles.css"></head>
+<body onload="requireAuth()">
+  <div class="topbar"><div class="brand"><div class="logo-badge">N</div> NCCR Portal</div><div class="top-actions"><div id="header-user" class="small"></div><button id="logout-btn" class="btn">Logout</button></div></div>
+  <div class="app"><aside class="sidebar"><div style="font-weight:700">Navigation</div><div class="nav"><a href="dashboard.html">Dashboard</a><a href="projects.html">Projects</a><a href="ngos.html">NGOs</a><a href="credits.html">Credits</a><a href="trading.html">Trading</a><a href="profile.html">Profile</a><a href="notifications.html" class="active">Notifications</a></div></aside>
+  <main class="main"><div class="card"><h3>Notifications</h3><ul id="notes"></ul></div></main></div>
+<script src="assets/app.js"></script>
+<script>
+requireAuth();
+const notes = ["Project P-001 requires verification","New evidence uploaded for P-002","Credit C-1004 issued"];
+const ul = document.getElementById('notes');
+notes.forEach(n=>{ const li=document.createElement('li'); li.textContent=n; li.style.padding='8px 0'; ul.appendChild(li); });
+</script>
+</body></html>

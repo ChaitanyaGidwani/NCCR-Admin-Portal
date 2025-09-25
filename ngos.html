@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>NGOs - NCCR Portal v2</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/styles.css"></head>
+<body onload="requireAuth()">
+  <div class="topbar"><div class="brand"><div class="logo-badge">N</div> NCCR Portal</div><div class="top-actions"><div id="header-user" class="small"></div><button id="logout-btn" class="btn">Logout</button></div></div>
+  <div class="app">
+    <aside class="sidebar"><div style="font-weight:700">Navigation</div><div class="nav"><a href="dashboard.html">Dashboard</a><a href="projects.html">Projects</a><a href="ngos.html" class="active">NGOs</a><a href="credits.html">Credits</a><a href="trading.html">Trading</a><a href="profile.html">Profile</a><a href="notifications.html">Notifications</a></div></aside>
+    <main class="main">
+      <div class="header-row"><div><h2>NGOs</h2><div class="small">List of participating NGOs</div></div><div><input id="q" class="search-input" placeholder="Search NGOs..."></div></div>
+      <div class="grid grid-cols-3" id="ngolist"></div>
+    </main>
+  </div>
+
+<script src="assets/app.js"></script>
+<script>
+requireAuth();
+const data = NCCR.ensureDemoData();
+function render(){
+  const q = document.getElementById('q').value.toLowerCase();
+  const area = document.getElementById('ngolist');
+  area.innerHTML = '';
+  data.ngos.filter(n=>n.name.toLowerCase().includes(q)).forEach(n=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.innerHTML = `<div style="font-weight:700">${n.name}</div><div class="small">${n.projects} projects</div><div class="small">${n.email} | ${n.phone}</div>`;
+    area.appendChild(div);
+  });
+}
+document.getElementById('q').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

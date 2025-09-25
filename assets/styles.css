@@ -1,0 +1,70 @@
+/* NCCR Portal v2 - Enhanced CSS */
+:root{
+  --bg:#0f172a; /* dark-blue background for header */
+  --page-bg: #f8fafc;
+  --card:#ffffff;
+  --accent:#059669;
+  --muted:#6b7280;
+  --glass: rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+body{background:linear-gradient(180deg,#f1f5f9 0%, #e6eef5 100%); color:#0f172a;}
+
+/* header */
+.topbar{height:64px;background:var(--bg);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 20px;box-shadow:0 6px 18px rgba(2,6,23,0.15)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
+.logo-badge{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+.top-actions{display:flex;align-items:center;gap:12px;font-size:14px}
+.top-actions .btn{background:transparent;border:1px solid rgba(255,255,255,0.08);color:white;padding:8px 10px;border-radius:8px}
+
+/* layout */
+.app{display:flex;min-height:calc(100vh - 64px)}
+.sidebar{width:260px;background:linear-gradient(180deg,#ffffff,#f8fafc);padding:18px;border-right:1px solid #e6eef5}
+.sidebar .nav{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.nav a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;color:#0f172a;text-decoration:none}
+.nav a:hover{background:#eefaf6}
+.nav a.active{background:linear-gradient(90deg,#ecfdf5,#dcfce7);border-left:4px solid var(--accent);padding-left:14px}
+
+/* content */
+.main{flex:1;padding:20px}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.search-input{padding:10px;border-radius:10px;border:1px solid #e6eef5;min-width:280px}
+.grid{display:grid;gap:16px}
+.grid-cols-4{grid-template-columns:repeat(4,1fr)}
+.grid-cols-3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.06)}
+.stat-title{font-size:13px;color:var(--muted)}
+.stat-value{font-size:22px;font-weight:700;margin-top:6px}
+.small{font-size:13px;color:var(--muted)}
+
+/* table */
+.table-wrap{overflow-x:auto;border-radius:10px}
+.table{width:100%;border-collapse:collapse;min-width:720px;background:transparent}
+.table th, .table td{padding:12px 14px;text-align:left;border-bottom:1px solid #eef2f7;font-size:14px}
+.table th{background:transparent;color:var(--muted);font-weight:600}
+.row-actions button{margin-right:6px;padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+.btn-approve{background:linear-gradient(90deg,#10b981,#059669);color:white}
+.btn-reject{background:linear-gradient(90deg,#ef4444,#dc2626);color:white}
+.btn-primary{background:linear-gradient(90deg,#3b82f6,#2563eb);color:white;padding:8px 12px;border-radius:8px;border:none}
+
+/* charts area */
+.chart-box{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* responsive */
+@media (max-width:1000px){
+  .sidebar{display:none}
+  .app{flex-direction:column}
+  .grid-cols-4{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
+  .grid-cols-4{grid-template-columns:1fr}
+  .grid-cols-3{grid-template-columns:1fr}
+  .search-input{min-width:unset;width:100%}
+}
+
+/* small helpers */
+.kv{display:flex;justify-content:space-between;align-items:center}
+.badge{padding:6px 8px;border-radius:999px;font-size:12px;background:#eef2f7;color:#0f172a}
+.fade-in{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}

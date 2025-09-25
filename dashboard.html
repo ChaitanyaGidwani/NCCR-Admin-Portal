@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard - NCCR Portal v2</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body onload="requireAuth()">
+  <div class="topbar">
+    <div class="brand"><div class="logo-badge">N</div> NCCR Portal</div>
+    <div class="top-actions">
+      <div id="header-user" class="small"></div>
+      <button id="logout-btn" class="btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div style="font-weight:700">Navigation</div>
+      <div class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="projects.html">Projects</a>
+        <a href="ngos.html">NGOs</a>
+        <a href="credits.html">Credits</a>
+        <a href="trading.html">Trading</a>
+        <a href="profile.html">Profile</a>
+        <a href="notifications.html">Notifications</a>
+      </div>
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">Version 2 — static frontend demo</div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <div>
+          <h2 style="margin:0">Dashboard</h2>
+          <div class="small">Overview of projects, credits and activity</div>
+        </div>
+        <div>
+          <input class="search-input" placeholder="Quick search projects or NGOs..." id="quick-search">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4" id="stats-area"></div>
+
+      <div class="grid" style="grid-template-columns:2fr 1fr;gap:16px;margin-top:16px">
+        <div class="card">
+          <h3 style="margin-top:0">Recent Projects</h3>
+          <div class="table-wrap">
+            <table class="table" id="recent-projects-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Status</th><th>Credits</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">Credits Issued (by month)</h3>
+          <canvas id="creditsChart"></canvas>
+        </div>
+      </div>
+
+      <div style="margin-top:16px" class="card">
+        <h3 style="margin-top:0">NGO Summary</h3>
+        <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap" id="ngo-cards"></div>
+      </div>
+
+    </main>
+  </div>
+
+<script src="assets/app.js"></script>
+<script>
+requireAuth();
+const data = NCCR.ensureDemoData();
+
+// stats cards
+const statsArea = document.getElementById('stats-area');
+const totalProjects = data.projects.length;
+const totalCredits = data.credits.reduce((s,c)=>s+c.amount,0);
+const activeNgos = data.ngos.length;
+const pending = data.projects.filter(p=>p.status==='Pending').length;
+const cards = [
+  {t:'Total Projects', v:totalProjects},
+  {t:'Total Credits (tCO₂e)', v: NCCR.formatNumber(totalCredits)},
+  {t:'Active NGOs', v: activeNgos},
+  {t:'Pending Approvals', v: pending}
+];
+statsArea.innerHTML = cards.map(c=>`<div class="card fade-in"><div class="stat-title">${c.t}</div><div class="stat-value">${c.v}</div></div>`).join('');
+
+// recent projects table
+const tbody = document.querySelector('#recent-projects-table tbody');
+tbody.innerHTML = '';
+data.projects.slice(0,5).forEach(p=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>${p.location}</td><td><span class="badge">${p.status}</span></td><td>${NCCR.formatNumber(p.credits)}</td>`;
+  tbody.appendChild(tr);
+});
+
+// credits chart
+const ctx = document.getElementById('creditsChart').getContext('2d');
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul'];
+const vals = [1200,900,1500,1100,1300,1250,1400];
+new Chart(ctx,{type:'line',data:{labels:months,datasets:[{label:'Credits (tCO₂e)',data:vals,fill:true,backgroundColor:'rgba(16,185,129,0.12)',borderColor:'#10b981'}]},options:{responsive:true}});
+
+// NGO cards
+const ngoArea = document.getElementById('ngo-cards');
+ngoArea.innerHTML = data.ngos.map(n=>`<div class="card" style="min-width:160px"><div style="font-weight:700">${n.name}</div><div class="small">${n.projects} projects</div><div class="small">${n.email}</div></div>`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Projects - NCCR Portal v2</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/styles.css"></head>
+<body onload="requireAuth()">
+  <div class="topbar"><div class="brand"><div class="logo-badge">N</div> NCCR Portal</div><div class="top-actions"><div id="header-user" class="small"></div><button id="logout-btn" class="btn">Logout</button></div></div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div style="font-weight:700">Navigation</div>
+      <div class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="projects.html" class="active">Projects</a>
+        <a href="ngos.html">NGOs</a>
+        <a href="credits.html">Credits</a>
+        <a href="trading.html">Trading</a>
+        <a href="profile.html">Profile</a>
+        <a href="notifications.html">Notifications</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="header-row">
+        <div><h2>Projects</h2><div class="small">Manage and review registered projects</div></div>
+        <div>
+          <input id="search" class="search-input" placeholder="Search by name, location or NGO">
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+          <select id="filterStatus" class="search-input" style="width:180px">
+            <option value="All">All statuses</option><option>Pending</option><option>Approved</option><option>Rejected</option>
+          </select>
+          <button id="resetBtn" class="btn">Reset</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" id="projectsTable"><thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Hectares</th><th>Status</th><th>Credits</th><th>Actions</th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+          <div class="small">Showing <span id="showing"></span></div>
+          <div>
+            <button id="prev" class="btn">Prev</button>
+            <button id="next" class="btn">Next</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<script src="assets/app.js"></script>
+<script>
+requireAuth();
+const data = NCCR.ensureDemoData();
+let projects = data.projects.slice();
+let page = 0, perPage = 4;
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const status = document.getElementById('filterStatus').value;
+  let filtered = projects.filter(p=>{
+    const matchQ = [p.name, p.location, p.ngo].join(' ').toLowerCase().includes(q);
+    const matchStatus = status==='All' ? true : p.status===status;
+    return matchQ && matchStatus;
+  });
+  const start = page*perPage;
+  const pageItems = filtered.slice(start, start+perPage);
+  const tbody = document.querySelector('#projectsTable tbody');
+  tbody.innerHTML = '';
+  pageItems.forEach(p=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>${p.location}</td><td>${p.hectares}</td><td><span class="badge">${p.status}</span></td><td>${NCCR.formatNumber(p.credits)}</td>
+      <td class="row-actions"><button class="btn-approve" onclick="approve('${p.id}')">Approve</button> <button class="btn-reject" onclick="rejectP('${p.id}')">Reject</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('showing').textContent = `${start+1}-${start+pageItems.length} of ${filtered.length}`;
+}
+function approve(id){ const idx = projects.findIndex(p=>p.id===id); if(idx>=0){ projects[idx].status='Approved'; save(); render(); alert('Approved '+id); } }
+function rejectP(id){ const idx = projects.findIndex(p=>p.id===id); if(idx>=0){ projects[idx].status='Rejected'; save(); render(); alert('Rejected '+id); } }
+function save(){ const d = NCCR.ensureDemoData(); d.projects = projects; NCCR.saveData(d); }
+document.getElementById('search').addEventListener('input', ()=>{ page=0; render(); });
+document.getElementById('filterStatus').addEventListener('change', ()=>{ page=0; render(); });
+document.getElementById('resetBtn').addEventListener('click', ()=>{ projects = NCCR.ensureDemoData().projects.slice(); document.getElementById('search').value=''; document.getElementById('filterStatus').value='All'; page=0; render(); });
+document.getElementById('prev').addEventListener('click', ()=>{ if(page>0){ page--; render(); }});
+document.getElementById('next').addEventListener('click', ()=>{ page++; render(); });
+render();
+</script>
+</body>
+</html>
