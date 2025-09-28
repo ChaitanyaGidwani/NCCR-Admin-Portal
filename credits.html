@@ -4,14 +4,14 @@
 <body onload="requireAuth()">
   <div class="topbar"><div class="brand"><div class="logo-badge">N</div> NCCR Portal</div><div class="top-actions"><div id="header-user" class="small"></div><button id="logout-btn" class="btn">Logout</button></div></div>
   <div class="app">
-    <aside class="sidebar"><div style="font-weight:700">Navigation</div><div class="nav"><a href="dashboard.html">Dashboard</a><a href="projects.html">Projects</a><a href="ngos.html">NGOs</a><a href="credits.html" class="active">Credits</a><a href="trading.html">Trading</a><a href="profile.html">Profile</a><a href="notifications.html">Notifications</a></div></aside>
+    <aside class="sidebar"><div style="font-weight:700">Navigation</div><div class="nav"><a href="./dashboard.html">Dashboard</a><a href="./projects.html">Projects</a><a href="ngos.html">NGOs</a><a href="credits.html" class="active">Credits</a><a href="trading.html">Trading</a><a href="profile.html">Profile</a><a href="notifications.html">Notifications</a></div></aside>
     <main class="main">
       <div class="header-row"><div><h2>Credits</h2><div class="small">Issued carbon credits</div></div><div><button id="exportBtn" class="btn-primary">Export CSV</button></div></div>
       <div class="card"><div class="table-wrap"><table class="table" id="creditsTable"><thead><tr><th>ID</th><th>Project ID</th><th>Amount</th><th>Owner</th><th>Issued</th></tr></thead><tbody></tbody></table></div></div>
     </main>
   </div>
 
-<script src="assets/app.js"></script>
+<script src="./assets/app.js"></script>
 <script>
 requireAuth();
 const data = NCCR.ensureDemoData();
