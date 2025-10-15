@@ -1,3 +1,5 @@
+deployed frontend : https://nccr-admin-portal.netlify.app/
+
 NCCR Portal v2 - Enhanced Static Frontend
 
 This is a richer static HTML/CSS/JS version of the NCCR Portal:
